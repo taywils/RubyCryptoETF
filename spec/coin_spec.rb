@@ -3,20 +3,24 @@ require 'ruby_crypto_etf'
 
 module RubyCryptoETF
   describe Coin do
-    it "creates a new coin with symbol and amount" do
-      coin = Coin.new(symbol: 'btc', amount: BigDecimal("0.001"))
+    it "creates a new coin with symbol, amount and exchange name" do
+      coin = Coin.new(symbol: 'btc',
+                      amount: BigDecimal("0.001"),
+                      exchange: 'BiNaNcE')
 
       expect(coin.symbol).to_not be_nil
       expect(coin.amount).to_not be_nil
 
       expect(coin.symbol).to eq('BTC')
       expect(coin.amount).to eq(BigDecimal("0.001"))
+      expect(coin.exchange).to eq('binance')
     end
 
     it "sets default values for initializer" do
       coin = Coin.new
 
       expect(coin.symbol).to eq("")
+      expect(coin.exchange).to eq("")
       expect(coin.amount).to eq(BigDecimal("0"))
     end
 
@@ -45,7 +49,7 @@ module RubyCryptoETF
     end
 
     it "will set a new Coin initialized with negative amount to zero" do
-      coin = Coin.new(symbol: 'XVG', amount: -10.234555)
+      coin = Coin.new(symbol: 'XVG', amount: -10.234555, exchange: 'Binance')
 
       expect(coin.amount).to eq(BigDecimal("0"))
     end

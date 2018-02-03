@@ -4,6 +4,8 @@ module RubyCryptoETF
     attr_writer :api_secret
     attr_reader :client
     attr_reader :balances
+    attr_reader :wallets
+    attr_reader :name
 
     def initialize(args = {})
       @api_key = args[:api_key]
@@ -11,6 +13,8 @@ module RubyCryptoETF
       @client = Coinbase::Wallet::Client.new(api_key: @api_key,
                                              api_secret: @api_secret)
       @balances = []
+      @wallets = []
+      @name = 'coinbase'
     end
 
     def fetch_balances
@@ -24,6 +28,17 @@ module RubyCryptoETF
           @balances << account['balance'] if BigDecimal(account['balance']['amount']) > BigDecimal("0")
         end
       end
+      @balances
+    end
+
+    def export_wallets
+      if @balances.any?
+        @wallets = []
+        @balances.each do |balance|
+          @wallets << Coin.new(symbol: balance["currency"], amount: balance["amount"])
+        end
+      end
+      @wallets
     end
   end
 end

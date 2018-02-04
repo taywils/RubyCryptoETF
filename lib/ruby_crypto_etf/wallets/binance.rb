@@ -8,8 +8,8 @@ module RubyCryptoETF
     attr_reader :name
 
     def initialize(args = {})
-      @api_key = args[:api_key]
-      @api_secret = args[:api_secret]
+      @api_key = args[:api_key] || ""
+      @api_secret = args[:api_secret] || ""
 
       Binance::Api::Configuration.api_key = @api_key
       Binance::Api::Configuration.secret_key = @api_secret
@@ -30,7 +30,7 @@ module RubyCryptoETF
       if @balances.any?
         @wallets = []
         @balances.each do |balance|
-          @wallets << Coin.new(symbol: balance[:asset], amount: balance[:free])
+          @wallets << Coin.new(symbol: balance[:asset], amount: balance[:free], exchange: @name)
         end
       end
       @wallets

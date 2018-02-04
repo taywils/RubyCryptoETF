@@ -8,8 +8,8 @@ module RubyCryptoETF
     attr_reader :name
 
     def initialize(args = {})
-      @api_key = args[:api_key]
-      @api_secret = args[:api_secret]
+      @api_key = args[:api_key] || ""
+      @api_secret = args[:api_secret] || ""
       @client = Coinbase::Wallet::Client.new(api_key: @api_key,
                                              api_secret: @api_secret)
       @balances = []
@@ -35,7 +35,7 @@ module RubyCryptoETF
       if @balances.any?
         @wallets = []
         @balances.each do |balance|
-          @wallets << Coin.new(symbol: balance["currency"], amount: balance["amount"])
+          @wallets << Coin.new(symbol: balance["currency"], amount: balance["amount"], exchange: @name)
         end
       end
       @wallets

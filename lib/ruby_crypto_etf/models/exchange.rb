@@ -1,14 +1,30 @@
 module RubyCryptoETF
   class Exchange
     attr_reader :name
-    attr_reader :wallet
+    attr_reader :wallets
 
     def initialize(args = {})
-      @wallets = nil
+      @wallets = args[:wallet] || nil
     end
 
-    def add_wallet(wallet)
-      @wallet << wallet
+    def name
+      @wallets.name
+    end
+
+    def coin_symbols
+      symbols = [] 
+      @wallets.each do |coin|
+        symbol << coin.symbol if !symbol.include?(coin.symbol)
+      end
+      return symbols
+    end
+
+    def amount_for_symbol(symbol)
+      amount = BigDecimal("0")
+      @wallets.each do |coin|
+
+      end
+      amount
     end
   end
 end

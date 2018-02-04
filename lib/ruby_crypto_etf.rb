@@ -1,4 +1,4 @@
-%w(bigdecimal coinbase/wallet).each do |library|
+%w(bigdecimal coinbase/wallet faraday binance-ruby).each do |library|
   require "#{library}"
 end
 
@@ -6,6 +6,18 @@ end
   require "ruby_crypto_etf/#{file}"
 end
 
-%w(coin exchange).each do |file|
+%w(coin exchange portfolio).each do |file|
   require "ruby_crypto_etf/models/#{file}"
+end
+
+%w(binance coinbase).each do |file|
+  require "ruby_crypto_etf/integrations/#{file}"
+end
+
+%w(base csv terminal web).each do |file|
+  require "ruby_crypto_etf/displays/#{file}"
+end
+
+%w(coin_market_cap).each do |file|
+  require "ruby_crypto_etf/markets/#{file}"
 end

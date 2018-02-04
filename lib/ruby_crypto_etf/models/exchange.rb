@@ -1,30 +1,18 @@
 module RubyCryptoETF
   class Exchange
     attr_reader :name
+    attr_reader :integration
     attr_reader :wallets
 
     def initialize(args = {})
-      @wallets = args[:wallet] || nil
+      @integration = args[:integration] || nil
+      @name = @integration.name
     end
 
-    def name
-      @wallets.name
-    end
-
-    def coin_symbols
-      symbols = [] 
-      @wallets.each do |coin|
-        symbol << coin.symbol if !symbol.include?(coin.symbol)
-      end
-      return symbols
-    end
-
-    def amount_for_symbol(symbol)
-      amount = BigDecimal("0")
-      @wallets.each do |coin|
-
-      end
-      amount
+    def load_wallets
+      @integration.fetch_balances
+      @wallets = @integration.wallets
+      @wallets
     end
   end
 end

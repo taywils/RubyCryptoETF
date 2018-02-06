@@ -31,9 +31,14 @@ module RubyCryptoETF
     end
 
     def fetch_ticker_for_name(coin_name)
-      response = @conn.get "/v1/ticker/#{coin_name}/"
-      ticker_for_coin_name = JSON.parse(response.body)
-      #TODO Find the array index of the ticker with coin_name and update @coin_tickers
+      response = @conn.get "#{CoinMarketCap.endpoints[:ticker]}#{coin_name}/"
+      fetched_ticker = JSON.parse(response.body)
+
+      selected_indices = @coin_tickers.each_index.select do |index|
+        @coin_tickers[index]['name'] = coin_name
+      end
+
+      @coin_tickers[selected_indices.first] = fetched_ticker
     end
 
     def get_usd_for_symbol(symbol)
@@ -54,13 +59,13 @@ module RubyCryptoETF
       if price_exponent > 0
         dollars = price_significant_string.slice(0...price_exponent)
         slice_end = (price_significant_string.length - price_exponent - 2) * -1
-        if slice_end == 0
+        if slice_end.zero?
           cents = price_significant_string.slice(price_exponent..-1)
         else
           cents = price_significant_string.slice(price_exponent...slice_end)
         end
         "$#{dollars}.#{cents}"
-      elsif price_exponent == 0
+      elsif price_exponent.zero?
         cents = price_significant_string.slice(0...2)
         "$0.#{cents}"
       elsif price_exponent == -1

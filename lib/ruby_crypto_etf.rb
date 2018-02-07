@@ -1,4 +1,4 @@
-%w(bigdecimal coinbase/wallet faraday binance-ruby).each do |library|
+%w(bigdecimal coinbase/wallet faraday binance-ruby monetize).each do |library|
   require "#{library}"
 end
 

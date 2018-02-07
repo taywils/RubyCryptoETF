@@ -50,11 +50,19 @@ module RubyCryptoETF
 
     private
 
-    def pretty_usd_price(big_decimal_price)
+    def display_usd_price(big_decimal_price)
+      Money.use_i18n = false
+
       price_usd = BigDecimal(raw_string)
       price_split = price_usd.split
       price_significant_string = price_split[1]
       price_exponent = price_split[3]
+
+      dollars_display = ->(dollars_string) do
+        Monetize.parse(dollars_string).format.split('.').first
+      end
+
+      zero_dollars = dollars_display.call('0')
 
       if price_exponent > 0
         dollars = price_significant_string.slice(0...price_exponent)
@@ -64,15 +72,19 @@ module RubyCryptoETF
         else
           cents = price_significant_string.slice(price_exponent...slice_end)
         end
-        "$#{dollars}.#{cents}"
+        "#{dollars_display.call(dollars)}.#{cents}"
       elsif price_exponent.zero?
         cents = price_significant_string.slice(0...2)
-        "$0.#{cents}"
+        if cents.to_i.zero?
+          "#{zero_dollars}.00"
+        else
+          "#{zero_dollars}.#{cents}"
+        end
       elsif price_exponent == -1
         cent = price_significant_string.slice(0...1)
-        "$0.0#{cent}"
+        "#{zero_dollars}.0#{cent}"
       else
-        "$0.00"
+        "#{zero_dollars}.00"
       end
     end
   end

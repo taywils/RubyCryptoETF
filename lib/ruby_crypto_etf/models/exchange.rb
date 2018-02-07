@@ -11,8 +11,7 @@ module RubyCryptoETF
 
     def load_wallets
       @integration.fetch_balances
-      @wallets = @integration.wallets
-      @wallets
+      @wallets = @integration.export_wallets
     end
   end
 end

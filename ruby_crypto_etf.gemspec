@@ -29,5 +29,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "faraday", ">= 0.14.0"
   spec.add_runtime_dependency "binance-ruby", ">= 0.1.8"
   spec.add_runtime_dependency "coinbase", ">= 4.1.0"
+  spec.add_runtime_dependency "monetize", ">= 1.7.0"
 end
 

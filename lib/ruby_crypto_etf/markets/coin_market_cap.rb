@@ -45,7 +45,7 @@ module RubyCryptoETF
       selected_coin_ticker = @coin_tickers.select do |coin_ticker|
         coin_ticker['symbol'] == symbol.upcase
       end
-      pretty_usd_price BigDecimal(selected_coin_ticker['price_usd'])
+      BigDecimal(selected_coin_ticker['price_usd'])
     end
 
     private

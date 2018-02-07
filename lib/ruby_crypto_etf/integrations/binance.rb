@@ -17,6 +17,7 @@ module RubyCryptoETF
       @client = Binance::Api.clone
       @balances = []
       @name = 'binance'
+      @wallets = []
     end
 
     def fetch_balances

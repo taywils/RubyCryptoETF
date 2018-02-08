@@ -20,7 +20,16 @@ module RubyCryptoETF
     end
 
     def prepare_for_visualization
+      display_data = {}
+      display_data[:market_cap] = @market.capitalization
+      display_data[:coins] = []
 
+      @exchanges.each do |exchange|
+        exchange.load_wallets
+        display_data[:coins] += exchange.wallets
+      end
+
+      display_data
     end
   end
 end

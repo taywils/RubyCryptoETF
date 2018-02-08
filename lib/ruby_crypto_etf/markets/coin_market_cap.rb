@@ -3,13 +3,13 @@ module RubyCryptoETF
     attr_reader :base_uri
     attr_reader :conn
     attr_reader :coin_tickers
-    attr_reader :market_cap
+    attr_reader :capitalization
 
     def initialize(args = {})
       @base_uri = 'https://api.coinmarketcap.com'
       @conn = Faraday.new(url: @base_uri)
       @coin_tickers = []
-      @market_cap = {}
+      @capitalization = ""
     end
 
     def self.endpoints
@@ -21,7 +21,9 @@ module RubyCryptoETF
 
     def fetch_total_market_cap
       response = @conn.get CoinMarketCap.endpoints[:market_cap]
-      @market_cap = JSON.parse(response.body)
+      market_cap_response = JSON.parse(response.body)
+      raw_market_cap_usd = BigDecimal(market_cap_response['total_market_cap_usd'])
+      @capitalization = self.display_usd_price(raw_market_cap_usd)
     end
 
     def fetch_tickers

@@ -4,7 +4,7 @@ RubyCryptoETF is a Ruby implementation of a Crypto ETF inspired by the original
 Javascript version developed by [benmarten/CryptoETF].
 
 ## Status
-Version 0.1.0
+[Version 0.1.0]
 
 ### Purpose
 
@@ -53,3 +53,4 @@ Apache License, see LICENSE.md
 [benmarten/CryptoETF]: https://github.com/benmarten/CryptoETF
 [coinbase/coinbase-ruby]: https://github.com/coinbase/coinbase-ruby
 [Jakenberg/binance-ruby]: https://github.com/Jakenberg/binance-ruby
+[Version 0.1.0]: https://github.com/taywils/RubyCryptoETF/tree/0.1.0-branch

@@ -1,5 +1,5 @@
 module RubyCryptoETF
-  class Coinbase
+  class CoinbaseIntegration
     attr_writer :api_key
     attr_writer :api_secret
     attr_reader :client

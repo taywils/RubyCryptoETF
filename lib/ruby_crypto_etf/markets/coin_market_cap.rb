@@ -22,8 +22,8 @@ module RubyCryptoETF
     def fetch_total_market_cap
       response = @conn.get CoinMarketCap.endpoints[:market_cap]
       market_cap_response = JSON.parse(response.body)
-      raw_market_cap_usd = BigDecimal(market_cap_response['total_market_cap_usd'])
-      @capitalization = self.display_usd_price(raw_market_cap_usd)
+      total_market_cap_usd_string = market_cap_response['total_market_cap_usd'].to_s
+      @capitalization = display_usd_price(total_market_cap_usd_string)
     end
 
     def fetch_tickers
@@ -52,10 +52,11 @@ module RubyCryptoETF
 
     private
 
-    def display_usd_price(big_decimal_price)
+    def display_usd_price(total_market_cap_usd_string)
+      puts total_market_cap_usd_string
       Money.use_i18n = false
 
-      price_usd = BigDecimal(raw_string)
+      price_usd = BigDecimal(total_market_cap_usd_string)
       price_split = price_usd.split
       price_significant_string = price_split[1]
       price_exponent = price_split[3]
@@ -73,6 +74,7 @@ module RubyCryptoETF
           cents = price_significant_string.slice(price_exponent..-1)
         else
           cents = price_significant_string.slice(price_exponent...slice_end)
+          cents = '00' if cents.empty?
         end
         "#{dollars_display.call(dollars)}.#{cents}"
       elsif price_exponent.zero?

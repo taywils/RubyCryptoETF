@@ -29,7 +29,11 @@ module RubyCryptoETF
         display_data[:coins] += exchange.wallets
       end
 
-      display_data
+      display_data[:coins].each do |coin|
+        coin_price = @market.get_usd_for_symbol(coin.symbol)
+        coin.value = coin.amonut * coin_price
+      end
+      byebug
     end
 
     def load_from_settings(settings_file_path)
@@ -42,7 +46,8 @@ module RubyCryptoETF
         integration_args = { api_key: coinbase_account['apiKey'],
                              api_secret: coinbase_account['apiSecret'] }
         coinbase_integration = CoinbaseIntegration.new(integration_args)
-        self.add_exchange(coinbase_integration)
+        new_exchange = Exchange.new({ integration: coinbase_integration })
+        self.add_exchange(new_exchange)
       end
 
       if accounts.keys.include?('binance')
@@ -50,7 +55,8 @@ module RubyCryptoETF
         integration_args = { api_key: binance_account['apiKey'],
                              api_secret: binance_account['apiSecret'] }
         binance_integration = BinanceIntegration.new(integration_args)
-        self.add_exchange(binance_integration)
+        new_exchange = Exchange.new({ integration: binance_integration })
+        self.add_exchange(new_exchange)
       end
     end
   end

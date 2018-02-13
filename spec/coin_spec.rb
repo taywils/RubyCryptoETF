@@ -6,14 +6,18 @@ module RubyCryptoETF
     it "creates a new coin with symbol, amount and exchange name" do
       coin = Coin.new(symbol: 'btc',
                       amount: BigDecimal("0.001"),
-                      exchange: 'BiNaNcE')
+                      exchange: 'BiNaNcE',
+                      value: BigDecimal("8856.01"))
 
       expect(coin.symbol).to_not be_nil
       expect(coin.amount).to_not be_nil
+      expect(coin.exchange).to_not be_nil
+      expect(coin.value).to_not be_nil
 
       expect(coin.symbol).to eq('BTC')
       expect(coin.amount).to eq(BigDecimal("0.001"))
       expect(coin.exchange).to eq('binance')
+      expect(coin.value).to eq(BigDecimal("8856.01"))
     end
 
     it "sets default values for initializer" do
@@ -22,14 +26,19 @@ module RubyCryptoETF
       expect(coin.symbol).to eq("")
       expect(coin.exchange).to eq("")
       expect(coin.amount).to eq(BigDecimal("0"))
+      expect(coin.value).to eq(BigDecimal("0"))
     end
 
     it "will always convert a numeric amount to BigDecimal" do
       coin_amount_float = 1.2345
-      coin = Coin.new(amount: coin_amount_float)
+      coin_value_float = 89714.144
+      coin = Coin.new(amount: coin_amount_float, value: coin_value_float)
 
       expect(coin.amount.class).to eq(BigDecimal)
       expect(coin.amount).to eq(BigDecimal(coin_amount_float.to_s))
+
+      expect(coin.value.class).to eq(BigDecimal)
+      expect(coin.value).to eq(BigDecimal(coin_value_float.to_s))
     end
 
     it "will always add_amount as a positive BigDecimal" do
@@ -49,9 +58,11 @@ module RubyCryptoETF
     end
 
     it "will set a new Coin initialized with negative amount to zero" do
-      coin = Coin.new(symbol: 'XVG', amount: -10.234555, exchange: 'Binance')
+      coin = Coin.new(symbol: 'XVG', amount: -10.234555, exchange: 'Binance',
+                     value: -13151)
 
       expect(coin.amount).to eq(BigDecimal("0"))
+      expect(coin.value).to eq(BigDecimal("0"))
     end
   end
 end

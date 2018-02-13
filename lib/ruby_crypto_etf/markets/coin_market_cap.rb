@@ -44,10 +44,12 @@ module RubyCryptoETF
     end
 
     def get_usd_for_symbol(symbol)
-      selected_coin_ticker = @coin_tickers.select do |coin_ticker|
-        coin_ticker['symbol'] == symbol.upcase
-      end
-      BigDecimal(selected_coin_ticker['price_usd'])
+      coin_ticker = get_coin_ticker_for_symbol(symbol)
+      BigDecimal(coin_ticker['price_usd'])
+    end
+
+    def get_coin_ticker_for_symbol(symbol)
+      @coin_tickers.find { |ticker| ticker['symbol'] == symbol.upcase }
     end
 
     private

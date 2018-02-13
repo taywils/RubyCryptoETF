@@ -14,7 +14,7 @@ module RubyCryptoETF
       table.title += " #{market_cap}"
       table_rows = []
       display_data[:coins].each do |coin|
-        table_rows << [coin.symbol, coin.amount, coin.exchange]
+        table_rows << [coin.symbol, coin.amount, coin.value, coin.exchange]
       end
       @table.rows = table_rows
       @table

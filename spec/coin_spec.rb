@@ -41,20 +41,26 @@ module RubyCryptoETF
       expect(coin.value).to eq(BigDecimal(coin_value_float.to_s))
     end
 
-    it "will always add_amount as a positive BigDecimal" do
+    it "will always add amount as a positive BigDecimal" do
       coin = Coin.new(symbol: 'ETH', amount: 1.23)
 
-      coin.add_amount 0.004
+      coin.amount += 0.004
       expect(coin.amount).to eq(BigDecimal("1.234"))
 
-      coin.add_amount 2.00000
+      coin.amount += 2.00000
       expect(coin.amount).to eq(BigDecimal("3.234"))
 
-      coin.add_amount(-4.0)
+      coin.amount += -4.0
       expect(coin.amount).to eq(BigDecimal("3.234"))
 
-      coin.add_amount(-3.0)
+      coin.amount += -3.0
       expect(coin.amount).to eq(BigDecimal("0.234"))
+
+      coin.amount += -3.0
+      expect(coin.amount).to eq(BigDecimal("0.234"))
+
+      coin.amount = coin.amount + 1
+      expect(coin.amount).to eq(BigDecimal("1.234"))
     end
 
     it "will set a new Coin initialized with negative amount to zero" do
@@ -63,6 +69,28 @@ module RubyCryptoETF
 
       expect(coin.amount).to eq(BigDecimal("0"))
       expect(coin.value).to eq(BigDecimal("0"))
+    end
+
+    it "will only set new positive values" do
+      coin = Coin.new()
+
+      coin_value = BigDecimal("100")
+      coin.value = coin_value
+
+      expect(coin.value).to eq(coin_value)
+
+      coin.value = -1.23145
+      expect(coin.value).to eq(coin_value)
+
+      coin.value = 200
+      expect(coin.value).to_not eq(coin_value)
+      expect(coin.value).to eq(BigDecimal("200"))
+
+      coin.value *= -1
+      expect(coin.value).to eq(BigDecimal("200"))
+
+      coin.value *= 10
+      expect(coin.value).to eq(BigDecimal("2000"))
     end
   end
 end

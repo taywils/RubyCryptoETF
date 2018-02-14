@@ -26,11 +26,11 @@ module RubyCryptoETF
       @exchange.to_s.downcase!
     end
 
-    def add_amount(new_amount)
-      @amount += new_amount if (@amount + new_amount) > BigDecimal("0")
+    def amount=(new_amount)
+      @amount = new_amount if new_amount > BigDecimal("0")
     end
 
-    def set_value(new_value)
+    def value=(new_value)
       @value = new_value if new_value > BigDecimal("0")
     end
   end

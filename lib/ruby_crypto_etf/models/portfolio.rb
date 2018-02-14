@@ -31,8 +31,9 @@ module RubyCryptoETF
 
       display_data[:coins].each do |coin|
         coin_price = @market.get_usd_for_symbol(coin.symbol)
-        coin.value = coin.amonut * coin_price
+        coin.value = coin.amount * coin_price
       end
+
       byebug
     end
 
@@ -47,7 +48,7 @@ module RubyCryptoETF
                              api_secret: coinbase_account['apiSecret'] }
         coinbase_integration = CoinbaseIntegration.new(integration_args)
         new_exchange = Exchange.new({ integration: coinbase_integration })
-        self.add_exchange(new_exchange)
+        add_exchange(new_exchange)
       end
 
       if accounts.keys.include?('binance')
@@ -56,7 +57,7 @@ module RubyCryptoETF
                              api_secret: binance_account['apiSecret'] }
         binance_integration = BinanceIntegration.new(integration_args)
         new_exchange = Exchange.new({ integration: binance_integration })
-        self.add_exchange(new_exchange)
+        add_exchange(new_exchange)
       end
     end
   end

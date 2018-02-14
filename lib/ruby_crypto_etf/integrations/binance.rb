@@ -22,8 +22,9 @@ module RubyCryptoETF
 
     def fetch_balances
       binance_account_info = @client.info!
-      binance_account_info.each do |account|
-        @balances << account if BigDecimal(account[:free]) > BigDecimal("0")
+      binance_account_balances = binance_account_info[:balances]
+      binance_account_balances.each do |balance|
+        @balances << balance if BigDecimal(balance[:free]) > BigDecimal("0")
       end
     end
 

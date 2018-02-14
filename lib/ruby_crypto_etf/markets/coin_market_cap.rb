@@ -19,6 +19,10 @@ module RubyCryptoETF
       }
     end
 
+    def self.symbol_mappings
+      { 'BCC': 'BCH' }
+    end
+
     def fetch_total_market_cap
       response = @conn.get CoinMarketCap.endpoints[:market_cap]
       market_cap_response = JSON.parse(response.body)
@@ -43,8 +47,13 @@ module RubyCryptoETF
       @coin_tickers[selected_indices.first] = fetched_ticker
     end
 
-    def get_usd_for_symbol(symbol)
-      coin_ticker = get_coin_ticker_for_symbol(symbol)
+    def get_usd_for_symbol(coin_symbol)
+      if CoinMarketCap.symbol_mappings.key? coin_symbol.to_sym
+        coin_symbol = CoinMarketCap.symbol_mappings[coin_symbol.to_sym]
+      end
+
+      coin_ticker = get_coin_ticker_for_symbol(coin_symbol)
+      byebug
       BigDecimal(coin_ticker['price_usd'])
     end
 
@@ -55,7 +64,6 @@ module RubyCryptoETF
     private
 
     def display_usd_price(total_market_cap_usd_string)
-      puts total_market_cap_usd_string
       Money.use_i18n = false
 
       price_usd = BigDecimal(total_market_cap_usd_string)

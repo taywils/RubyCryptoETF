@@ -20,7 +20,7 @@ module RubyCryptoETF
     end
 
     def self.symbol_mappings
-      { 'BCC': 'BCH' }
+      { 'BCC': 'BCH', 'IOTA': 'MIOTA' }
     end
 
     def fetch_total_market_cap
@@ -48,12 +48,11 @@ module RubyCryptoETF
     end
 
     def get_usd_for_symbol(coin_symbol)
-      if CoinMarketCap.symbol_mappings.key? coin_symbol.to_sym
+      if CoinMarketCap.symbol_mappings.key? coin_symbol.upcase.to_sym
         coin_symbol = CoinMarketCap.symbol_mappings[coin_symbol.to_sym]
       end
 
       coin_ticker = get_coin_ticker_for_symbol(coin_symbol)
-      byebug
       BigDecimal(coin_ticker['price_usd'])
     end
 

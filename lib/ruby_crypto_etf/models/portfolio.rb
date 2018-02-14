@@ -34,10 +34,10 @@ module RubyCryptoETF
         coin.value = coin.amount * coin_price
       end
 
-      byebug
+      display_data
     end
 
-    def load_from_settings(settings_file_path)
+    def initialize_exchanges_from_settings(settings_file_path)
       settings = YAML.load_file(settings_file_path)
 
       accounts = settings['accounts'] if settings.keys.include?('accounts')

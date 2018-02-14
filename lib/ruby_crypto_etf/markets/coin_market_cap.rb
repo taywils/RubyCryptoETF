@@ -26,8 +26,7 @@ module RubyCryptoETF
     def fetch_total_market_cap
       response = @conn.get CoinMarketCap.endpoints[:market_cap]
       market_cap_response = JSON.parse(response.body)
-      total_market_cap_usd_string = market_cap_response['total_market_cap_usd'].to_s
-      @capitalization = display_usd_price(total_market_cap_usd_string)
+      @capitalization = market_cap_response['total_market_cap_usd'].to_s
     end
 
     def fetch_tickers
@@ -58,47 +57,6 @@ module RubyCryptoETF
 
     def get_coin_ticker_for_symbol(symbol)
       @coin_tickers.find { |ticker| ticker['symbol'] == symbol.upcase }
-    end
-
-    private
-
-    def display_usd_price(total_market_cap_usd_string)
-      Money.use_i18n = false
-
-      price_usd = BigDecimal(total_market_cap_usd_string)
-      price_split = price_usd.split
-      price_significant_string = price_split[1]
-      price_exponent = price_split[3]
-
-      dollars_display = ->(dollars_string) do
-        Monetize.parse(dollars_string).format.split('.').first
-      end
-
-      zero_dollars = dollars_display.call('0')
-
-      if price_exponent > 0
-        dollars = price_significant_string.slice(0...price_exponent)
-        slice_end = (price_significant_string.length - price_exponent - 2) * -1
-        if slice_end.zero?
-          cents = price_significant_string.slice(price_exponent..-1)
-        else
-          cents = price_significant_string.slice(price_exponent...slice_end)
-          cents = '00' if cents.empty?
-        end
-        "#{dollars_display.call(dollars)}.#{cents}"
-      elsif price_exponent.zero?
-        cents = price_significant_string.slice(0...2)
-        if cents.to_i.zero?
-          "#{zero_dollars}.00"
-        else
-          "#{zero_dollars}.#{cents}"
-        end
-      elsif price_exponent == -1
-        cent = price_significant_string.slice(0...1)
-        "#{zero_dollars}.0#{cent}"
-      else
-        "#{zero_dollars}.00"
-      end
     end
   end
 end

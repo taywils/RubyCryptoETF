@@ -92,5 +92,13 @@ module RubyCryptoETF
       coin.value *= 10
       expect(coin.value).to eq(BigDecimal("2000"))
     end
+
+    it "should be serialized to a hash" do
+      coin = Coin.new(symbol: 'ETH', amount: 1.23, exchange: 'gemini', value: 246)
+
+      coin_hash = { symbol: 'ETH', amount: BigDecimal("1.23"), exchange: 'gemini', value: BigDecimal("246") }
+
+      expect(coin.to_h).to eq(coin_hash)
+    end
   end
 end

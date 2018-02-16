@@ -1,4 +1,4 @@
-%w(bigdecimal coinbase/wallet faraday binance-ruby monetize terminal-table).each do |library|
+%w(bigdecimal coinbase/wallet faraday binance-ruby monetize terminal-table csv json).each do |library|
   require "#{library}"
 end
 

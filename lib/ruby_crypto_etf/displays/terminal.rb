@@ -1,12 +1,12 @@
 module RubyCryptoETF
-  attr_reader :table
-
   class TerminalDisplay
     include BaseDisplay
 
+    attr_reader :table
+
     def initialize(args = {})
       @table = Terminal::Table.new.tap do |tbl|
-        tbl.headings = ['Coin', 'Amount', 'Value Est.', 'Exchange']
+        tbl.headings = tabular_headings
         tbl.title = 'Current MarketCap'
       end
     end

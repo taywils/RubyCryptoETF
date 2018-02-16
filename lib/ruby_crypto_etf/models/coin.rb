@@ -27,11 +27,21 @@ module RubyCryptoETF
     end
 
     def amount=(new_amount)
+      if new_amount.class != BigDecimal
+        new_amount = BigDecimal(new_amount.to_s)
+      end
       @amount = new_amount if new_amount > BigDecimal("0")
     end
 
     def value=(new_value)
+      if new_value.class != BigDecimal
+        new_value = BigDecimal(new_value.to_s)
+      end
       @value = new_value if new_value > BigDecimal("0")
+    end
+
+    def to_h
+      { symbol: @symbol, amount: @amount, exchange: @exchange, value: @value }
     end
   end
 end

@@ -1,8 +1,12 @@
 module RubyCryptoETF
   module BaseDisplay
+    def tabular_headings
+      ['Asset', 'Amount', 'Value', 'Exchange']
+    end
+
     def display_bigdecimal(big_decimal)
       if big_decimal.class != BigDecimal
-        big_decimal = BigDecimal(big_decimal)
+        big_decimal = BigDecimal(big_decimal.to_s)
       end
       big_decimal.to_s("F")
     end

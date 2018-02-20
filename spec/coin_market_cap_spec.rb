@@ -40,7 +40,7 @@ module RubyCryptoETF
         last_updated: 1518953067
       } }
 
-      let(:tickers_uri) { coin_market_cap.base_uri + "#{CoinMarketCap.endpoints[:ticker]}/?limit=0" }
+      let(:tickers_uri) { coin_market_cap.base_uri + "#{CoinMarketCap.endpoints[:ticker]}?limit=0" }
       let(:tickers_response) {
         [
           {

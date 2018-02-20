@@ -2,21 +2,23 @@ require 'ruby_crypto_etf'
 
 module RubyCryptoETF
   describe Coin do
-    it "creates a new coin with symbol, amount and exchange name" do
-      coin = Coin.new(symbol: 'btc',
-                      amount: BigDecimal("0.001"),
-                      exchange: 'BiNaNcE',
-                      value: BigDecimal("8856.01"))
+    context "initialization" do
+      it "should create a new Coin" do
+        coin = Coin.new(symbol: 'btc',
+                        amount: BigDecimal("0.001"),
+                        exchange: 'BiNaNcE',
+                        value: BigDecimal("8856.01"))
 
-      expect(coin.symbol).to_not be_nil
-      expect(coin.amount).to_not be_nil
-      expect(coin.exchange).to_not be_nil
-      expect(coin.value).to_not be_nil
+        expect(coin.symbol).to_not be_nil
+        expect(coin.amount).to_not be_nil
+        expect(coin.exchange).to_not be_nil
+        expect(coin.value).to_not be_nil
 
-      expect(coin.symbol).to eq('BTC')
-      expect(coin.amount).to eq(BigDecimal("0.001"))
-      expect(coin.exchange).to eq('binance')
-      expect(coin.value).to eq(BigDecimal("8856.01"))
+        expect(coin.symbol).to eq('BTC')
+        expect(coin.amount).to eq(BigDecimal("0.001"))
+        expect(coin.exchange).to eq('binance')
+        expect(coin.value).to eq(BigDecimal("8856.01"))
+      end
     end
 
     it "sets default values for initializer" do

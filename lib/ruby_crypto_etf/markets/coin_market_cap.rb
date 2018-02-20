@@ -32,7 +32,7 @@ module RubyCryptoETF
     end
 
     def fetch_tickers
-      url = "#{CoinMarketCap.endpoints[:ticker]}/?limit=0"
+      url = "#{CoinMarketCap.endpoints[:ticker]}?limit=0"
       response = @conn.get url
       if response.success?
         @coin_tickers = JSON.parse(response.body, symbolize_names: true)
@@ -41,11 +41,7 @@ module RubyCryptoETF
 
     def fetch_ticker_for_name(coin_name)
       response = @conn.get "#{CoinMarketCap.endpoints[:ticker]}#{coin_name}/"
-      if response.success?
-        JSON.parse(response.body, symbolize_names: true).first
-      else
-        nil
-      end
+      response.success? ? JSON.parse(response.body, symbolize_names: true).first : nil
     end
 
     def get_coin_ticker_for_symbol(symbol)
@@ -58,11 +54,7 @@ module RubyCryptoETF
       end
 
       coin_ticker = get_coin_ticker_for_symbol(coin_symbol)
-      if coin_ticker.nil?
-        nil
-      else
-        BigDecimal(coin_ticker[:price_usd])
-      end
+      coin_ticker.nil? ? nil : BigDecimal(coin_ticker[:price_usd])
     end
 
     def update_ticker_for_symbol(ticker_symbol, new_ticker)

@@ -6,7 +6,8 @@ module RubyCryptoETF
 
     def initialize(args = {})
       @integration = args[:integration] || nil
-      @name = @integration.name
+      @name = @integration.nil? ? "" : @integration.name
+      @wallets = args[:wallets] || []
     end
 
     def load_wallets

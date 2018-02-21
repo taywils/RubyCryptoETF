@@ -62,6 +62,8 @@ module RubyCryptoETF
       0.upto(price_inputs.length - 1) do |index|
         expect(dummy_display.display_usd_price(price_inputs[index])).to eq price_outputs[index]
       end
+
+      expect(dummy_display.display_usd_price(nil)).to eq "$0.00"
     end
   end
 end

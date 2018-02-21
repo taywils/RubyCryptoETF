@@ -12,6 +12,8 @@ module RubyCryptoETF
     end
 
     def display_usd_price(floating_point_string, currency_code = 'USD')
+      floating_point_string = "0.00" if floating_point_string.nil?
+
       Money.use_i18n = false
 
       if floating_point_string.count('.') > 0

@@ -31,9 +31,31 @@ module RubyCryptoETF
       expect(dummy_display.respond_to? :display_usd_price).to be true
     end
 
-    it "should ensure that display_usd_price is correct" do
-      price_inputs = %w[9177.44 0.928308 0.000345882 0 12.0 54.00 456789001314.569999]
-      price_outputs = %w[$9,177.44 $0.92 $0.00 $0.00 $12.00 $54.00 $456,789,001,314.56]
+    it "should display_usd_price correctly" do
+      price_inputs = %w[
+        9177.44
+        0.928308
+        0.000345882
+        0
+        12.0
+        54.00
+        456789001314.569999
+        10.0
+        7
+        22000.00
+      ]
+      price_outputs = %w[
+        $9,177.44
+        $0.92
+        $0.00
+        $0.00
+        $12.00
+        $54.00
+        $456,789,001,314.56
+        $10.00
+        $7.00
+        $22,000.00
+      ]
 
       expect(price_inputs.length).to eq price_outputs.length
 

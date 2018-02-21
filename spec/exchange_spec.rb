@@ -21,8 +21,7 @@ module RubyCryptoETF
 
     context "methods" do
       it "should load_wallets" do
-        integration_double = double('integration')
-        allow(integration_double).to receive(:name) { 'Binance' }
+        integration_double = double('integration', name: 'Binance')
         allow(integration_double).to receive(:fetch_balances) { nil }
 
         coin_double = double('coin')

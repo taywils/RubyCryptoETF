@@ -17,6 +17,7 @@ module RubyCryptoETF
       table = terminal_diplay.visualize dummy_display_data
 
       expect(table.rows.length).to eq dummy_display_data[:coins].length
+      expect(table.title).to eq "Current MarketCap $123,456.78"
     end
   end
 end

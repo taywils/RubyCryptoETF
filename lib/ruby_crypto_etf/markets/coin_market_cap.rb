@@ -3,13 +3,13 @@ module RubyCryptoETF
     attr_reader :base_uri
     attr_reader :conn
     attr_reader :coin_tickers
-    attr_reader :market_cap
+    attr_reader :capitalization
 
     def initialize(args = {})
-      @base_uri = 'https://api.coinmarketcap.com'
-      @conn = Faraday.new(url: @base_uri)
-      @coin_tickers = []
-      @market_cap = {}
+      @base_uri = args[:base_uri] || 'https://api.coinmarketcap.com'
+      @conn = args[:conn] || Faraday.new(url: @base_uri)
+      @coin_tickers = args[:coin_tickers] || []
+      @capitalization = args[:capitalization] || ""
     end
 
     def self.endpoints
@@ -19,60 +19,51 @@ module RubyCryptoETF
       }
     end
 
+    def self.symbol_mappings
+      { 'BCC': 'BCH', 'IOTA': 'MIOTA' }
+    end
+
     def fetch_total_market_cap
       response = @conn.get CoinMarketCap.endpoints[:market_cap]
-      @market_cap = JSON.parse(response.body)
+      if response.success?
+        market_cap_response = JSON.parse(response.body, symbolize_names: true)
+        @capitalization = market_cap_response[:total_market_cap_usd].to_s
+      end
     end
 
     def fetch_tickers
-      url = "#{CoinMarketCap.endpoints[:ticker]}/?limit=0"
+      url = "#{CoinMarketCap.endpoints[:ticker]}?limit=0"
       response = @conn.get url
-      @coin_tickers = JSON.parse(response.body)
+      if response.success?
+        @coin_tickers = JSON.parse(response.body, symbolize_names: true)
+      end
     end
 
     def fetch_ticker_for_name(coin_name)
       response = @conn.get "#{CoinMarketCap.endpoints[:ticker]}#{coin_name}/"
-      fetched_ticker = JSON.parse(response.body)
-
-      selected_indices = @coin_tickers.each_index.select do |index|
-        @coin_tickers[index]['name'] = coin_name
-      end
-
-      @coin_tickers[selected_indices.first] = fetched_ticker
+      response.success? ? JSON.parse(response.body, symbolize_names: true).first : nil
     end
 
-    def get_usd_for_symbol(symbol)
-      selected_coin_ticker = @coin_tickers.select do |coin_ticker|
-        coin_ticker['symbol'] == symbol.upcase
-      end
-      pretty_usd_price BigDecimal(selected_coin_ticker['price_usd'])
+    def get_coin_ticker_for_symbol(symbol)
+      @coin_tickers.find { |ticker| ticker[:symbol] == symbol.upcase }
     end
 
-    private
+    def get_usd_for_symbol(coin_symbol)
+      if CoinMarketCap.symbol_mappings.key? coin_symbol.upcase.to_sym
+        coin_symbol = CoinMarketCap.symbol_mappings[coin_symbol.to_sym]
+      end
 
-    def pretty_usd_price(big_decimal_price)
-      price_usd = BigDecimal(raw_string)
-      price_split = price_usd.split
-      price_significant_string = price_split[1]
-      price_exponent = price_split[3]
+      coin_ticker = get_coin_ticker_for_symbol(coin_symbol)
+      coin_ticker.nil? ? nil : BigDecimal(coin_ticker[:price_usd])
+    end
 
-      if price_exponent > 0
-        dollars = price_significant_string.slice(0...price_exponent)
-        slice_end = (price_significant_string.length - price_exponent - 2) * -1
-        if slice_end.zero?
-          cents = price_significant_string.slice(price_exponent..-1)
-        else
-          cents = price_significant_string.slice(price_exponent...slice_end)
-        end
-        "$#{dollars}.#{cents}"
-      elsif price_exponent.zero?
-        cents = price_significant_string.slice(0...2)
-        "$0.#{cents}"
-      elsif price_exponent == -1
-        cent = price_significant_string.slice(0...1)
-        "$0.0#{cent}"
-      else
-        "$0.00"
+    def update_ticker_for_symbol(ticker_symbol, new_ticker)
+      selected_ticker_indices = @coin_tickers.each_index.select do |index|
+        @coin_tickers[index][:symbol] == ticker_symbol.upcase
+      end
+
+      if selected_ticker_indices.any?
+        @coin_tickers[selected_ticker_indices.first] = new_ticker 
       end
     end
   end

@@ -1,3 +1,8 @@
+# Proof of Concept Only
+
+I have decided to move away from the planned Ruby version towards a different approach.
+My end goal to construct a tool for crypto trading and portfolio/analysis and management did not align with the state of this project.
+
 # RubyCryptoETF
 
 RubyCryptoETF is a Ruby implementation of a Crypto ETF inspired by the original
@@ -20,32 +25,6 @@ Below is the current status for supported crypto asset exchange integrations
 [x] Binance via [Jakenberg/binance-ruby]
 
 [x] CoinMarketCap
-
-[ ] Gemini
-
-[ ] MyEtherScan
-
-[ ] Poloniex
-
-[ ] GDAX
-
-[ ] Bittrex
-
-## Roadmap
-
-[ ] Capture and display current investment portfolio
-
-[ ] Interactive CLI mode
-
-[ ] Export formats for web and csv
-
-[ ] Ability to place buy/sell orders
-
-[ ] Websocket integration for exchanges which support websockets
-
-[ ] Some kind of crypto news crawler integration with Mechanize or Nokogiri
-
-[ ] Rails compatibility
 
 ## License
 Apache License, see LICENSE.md

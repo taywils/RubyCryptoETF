@@ -1,0 +1,9 @@
+accounts:
+  coinbase:
+    -
+      apiKey: ""
+      apiSecret: ""
+  binance:
+    -
+      apiKey: ""
+      apiSecret: ""

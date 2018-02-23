@@ -1,5 +1,5 @@
 module RubyCryptoETF
-  class Coinbase
+  class CoinbaseIntegration
     attr_writer :api_key
     attr_writer :api_secret
     attr_reader :client
@@ -10,10 +10,10 @@ module RubyCryptoETF
     def initialize(args = {})
       @api_key = args[:api_key] || ""
       @api_secret = args[:api_secret] || ""
-      @client = Coinbase::Wallet::Client.new(api_key: @api_key,
+      @client = args[:client] ||  Coinbase::Wallet::Client.new(api_key: @api_key,
                                              api_secret: @api_secret)
-      @balances = []
-      @wallets = []
+      @balances = args[:balances] || []
+      @wallets = args[:wallets] || []
       @name = 'coinbase'
     end
 

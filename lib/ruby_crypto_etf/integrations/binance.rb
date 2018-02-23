@@ -14,10 +14,10 @@ module RubyCryptoETF
       Binance::Api::Configuration.api_key = @api_key
       Binance::Api::Configuration.secret_key = @api_secret
 
-      @client = Binance::Api.clone
-      @balances = []
+      @client = args[:client] || Binance::Api.clone
+      @balances = args[:balances] ||  []
+      @wallets = args[:wallets] || []
       @name = 'binance'
-      @wallets = []
     end
 
     def fetch_balances

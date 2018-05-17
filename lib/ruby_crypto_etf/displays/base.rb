@@ -14,6 +14,10 @@ module RubyCryptoETF
     def display_usd_price(floating_point_string, currency_code = 'USD')
       floating_point_string = "0.00" if floating_point_string.nil?
 
+      if floating_point_string.class != String
+        floating_point_string = BigDecimal(floating_point_string).to_s("F")
+      end
+
       Money.use_i18n = false
 
       if floating_point_string.count('.') > 0
@@ -30,9 +34,11 @@ module RubyCryptoETF
       end
 
       monetized_integer = Monetize.parse(currency_code.upcase + integer)
-      integer = monetized_integer.format.split(monetized_integer.separator).first
+      currency_separator = monetized_integer.currency.separator
 
-      integer + monetized_integer.separator + fraction
+      integer = monetized_integer.format.split(currency_separator).first
+
+      integer + currency_separator + fraction
     end
   end
 end

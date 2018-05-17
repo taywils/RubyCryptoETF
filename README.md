@@ -8,6 +8,10 @@ My end goal to construct a tool for crypto trading and portfolio/analysis and ma
 RubyCryptoETF is a Ruby implementation of a Crypto ETF inspired by the original
 Javascript version developed by [benmarten/CryptoETF].
 
+<p align="center">
+  <img src="https://s3-us-west-2.amazonaws.com/taywils.me.static.files/images/ruby_crypto_etf/ruby_crypto_etf_v_10_1.png" alt="TerminalDisplay" />
+</p>
+
 ## Status
 [Version 0.1.0]
 
@@ -94,7 +98,7 @@ portfolio = RubyCryptoETF::Portfolio.new({ market: cm, display: display })
 
 - From the `setting.yaml` file created earlier, initialize the exchanges
 ```ruby
-path_to_your_settings_yaml = "Replace this string with the pull path string to your settings.yaml"
+path_to_your_settings_yaml = "Replace this string with the full path to your settings.yaml"
 portfolio.initialize_exchanges_from_settings(path_to_your_settings_yaml)
 ```
 
